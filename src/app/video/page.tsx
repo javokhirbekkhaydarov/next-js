@@ -11,7 +11,6 @@ const VideoPage = () => {
   const [linkCopied, setLinkCopied] = useState(false);
 
   useEffect(() => {
-    // Havoladan peerId ni olish
     const params = new URLSearchParams(window.location.search);
     const peerIdFromLink = params.get("peerId");
     if (peerIdFromLink) {
@@ -36,23 +35,18 @@ const VideoPage = () => {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareableLink).then(() => {
       setLinkCopied(true);
-
       setTimeout(() => setLinkCopied(false), 2000);
     });
   };
 
   return (
-    <div
-      style={{ padding: "20px", position: "absolute", top: "20px" }}
-      className="flex items-center justify-center flex-col"
-    >
+    <div className="flex items-center justify-center flex-col" style={{ padding: "20px", position: "absolute", top: "20px" }}>
       <h1>Video Call</h1>
 
       {!isMeetingStarted ? (
         <button
-          type="button"
-          className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
           onClick={createMeeting}
+          className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100"
         >
           New meeting +
         </button>
@@ -76,9 +70,7 @@ const VideoPage = () => {
         </div>
       )}
 
-      {isMeetingStarted && (
-        <VideoCall peerId={peerId} remotePeerId={remotePeerId} />
-      )}
+      {isMeetingStarted && <VideoCall peerId={peerId} remotePeerId={remotePeerId} />}
     </div>
   );
 };
