@@ -7,6 +7,7 @@ import VideoOffIcon from "@/app/components/icons/VideoOffIcon";
 import Microphone from "@/app/components/icons/Microphone";
 import { MicrophoneOff } from "@/app/components/icons/MicrophoneOff";
 import { EndCall } from "@/app/components/icons/EndCall";
+import {useRouter} from "next/navigation";
 
 const VideoCall = ({ peerId, remotePeerId }) => {
   const localVideoRef = useRef(null);
@@ -14,11 +15,15 @@ const VideoCall = ({ peerId, remotePeerId }) => {
   const localStreamRef = useRef(null);
   const remoteStreamRef = useRef(null);
   const peerInstance = useRef(null);
-
+  const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
   const [linkCopied, setLinkCopied] = useState(false);
   const [currentPeerId, setCurrentPeerId] = useState(peerId);
   const [currentRemotePeerId, setCurrentRemotePeerId] = useState(remotePeerId);
+
+  const [isMicrophoneOn, setIsMicrophoneOn] = useState(true);
+  const [isVideoOn, setIsVideoOn] = useState(true);
+  const [isCallEnded, setIsCallEnded] = useState(false);
 
   useEffect(() => {
     const initializeMediaStream = async () => {
@@ -60,7 +65,7 @@ const VideoCall = ({ peerId, remotePeerId }) => {
         });
 
         peer.on("error", (err) => {
-          setErrorMessage(` error: ${err.message}`);
+          setErrorMessage(`Error: ${err.message}`);
         });
 
         peerInstance.current = peer;
@@ -86,6 +91,42 @@ const VideoCall = ({ peerId, remotePeerId }) => {
     };
   }, [remotePeerId]);
 
+  const toggleMicrophone = () => {
+    const audioTrack = localStreamRef.current
+        ?.getTracks()
+        .find((track) => track.kind === "audio");
+    if (audioTrack) {
+      audioTrack.enabled = !audioTrack.enabled;
+      setIsMicrophoneOn(audioTrack.enabled);
+    }
+  };
+
+  const toggleVideo = () => {
+    const videoTrack = localStreamRef.current
+        ?.getTracks()
+        .find((track) => track.kind === "video");
+    if (videoTrack) {
+      videoTrack.enabled = !videoTrack.enabled;
+      setIsVideoOn(videoTrack.enabled);
+    }
+  };
+
+  const endCall = () => {
+    setIsCallEnded(true);
+
+    if (localStreamRef.current) {
+      localStreamRef.current.getTracks().forEach((track) => track.stop());
+    }
+
+    if (remoteStreamRef.current) {
+      remoteStreamRef.current.getTracks().forEach((track) => track.stop());
+    }
+
+    if (peerInstance.current) {
+      peerInstance.current.destroy();
+    }
+  };
+
   const shareableLink = `${window.location.origin}?peerId=${currentPeerId}`;
 
   const handleCopyLink = () => {
@@ -94,65 +135,77 @@ const VideoCall = ({ peerId, remotePeerId }) => {
       setTimeout(() => setLinkCopied(false), 2000);
     });
   };
+  const clearPath = () => {
+    router.push("/");
+    window.location.href = '/'
+    setTimeout(() => {
+      window.location.reload()
+    } , 500)
+
+  };
+  if (isCallEnded) {
+    return (
+        <div className="flex flex-col items-center justify-center h-screen gap-4">
+          <h1 className="text-2xl font-bold">Meeting Finished</h1>
+          <div onClick={() => clearPath()} className={'cursor-pointer'}>Go Home</div>
+        </div>
+    );
+  }
 
   return (
-    <div className={"flex flex-col items-center justify-center"}>
-      <div className="absolute top-4 left-4 z-10 h-auto join-card md:top-auto md:bottom-4">
-        <p>Share this link with others to join:</p>
-        <div className="flex flex-col items-center gap-2">
-          <input
-            type="text"
-            value={linkCopied ? "Link copied!" : peerId}
-            readOnly
-            className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-          />
-          <button
-            onClick={handleCopyLink}
-            type="button"
-            className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-          >
-            {linkCopied ? "Copied✅" : "Copy Link"}
-          </button>
+      <div className="flex flex-col items-center justify-center">
+        <div className="absolute top-4 left-4 z-10 h-auto join-card md:top-auto md:bottom-4">
+          <p>Share this link with others to join:</p>
+          <div className="flex flex-col items-center gap-2">
+            <input
+                type="text"
+                value={linkCopied ? "Link copied!" : peerId}
+                readOnly
+                className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            />
+            <button
+                onClick={handleCopyLink}
+                type="button"
+                className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            >
+              {linkCopied ? "Copied✅" : "Copy Link"}
+            </button>
+          </div>
         </div>
-      </div>
-      <div className="flex justify-center items-center  flex-col gap-4 mt-4">
-        <div className="text-center">
+        <div className="flex justify-center items-center flex-col gap-4 mt-4">
           <video
-            ref={localVideoRef}
-            autoPlay
-            muted
-            className=" object-contain fixed z-0 h-dvh top-0 left-0 right-0 bottom-0 border border-gray-300 rounded m-auto"
+              ref={localVideoRef}
+              autoPlay
+              muted
+              className="object-contain fixed z-0 h-dvh top-0 left-0 right-0 bottom-0 border border-gray-300 rounded m-auto"
+          />
+          <video
+              ref={remoteVideoRef}
+              autoPlay
+              className="h-auto w-[300px] object-cover join-card object-contain fixed z-10 right-4 bottom-4 bg-slate-300 m-auto border border-gray-300 rounded"
           />
         </div>
+        <div className="actions fixed bottom-4 flex gap-4">
+          <div className="icons">
 
-        <div className="text-center  ">
-          <video
-            ref={remoteVideoRef}
-            autoPlay
-            style={{ padding: "0" }}
-            className=" h-auto w-[300px] object-cover p-0  join-card object-contain fixed z-10    right-4 bottom-4 bg-slate-300	 m-auto border border-gray-300 rounded"
-          />
-        </div>
-      </div>
-      <div className="actions fixed bottom-4 left-auto right-auto z-10">
-        <div className="icons">
-          <div className="video">
-            <VideoIcon />
-            <VideoOffIcon />
-          </div>
-          <div className="video">
-            <Microphone />
-            <MicrophoneOff />
-          </div>
-          <div className="video end_call">
+          <button onClick={toggleVideo} className="video">
+            {isVideoOn ? <VideoIcon /> : <VideoOffIcon />}
+          </button>
+          <button
+              onClick={toggleMicrophone}
+              className="video"
+          >
+            {isMicrophoneOn ? <Microphone /> : <MicrophoneOff />}
+          </button>
+          <button onClick={endCall} className="video end_call">
             <EndCall />
+          </button>
           </div>
         </div>
+        {errorMessage && (
+            <div className="text-center text-red-500 mt-4">{errorMessage}</div>
+        )}
       </div>
-      {errorMessage && (
-        <div className="text-center text-red-500 mt-4">{errorMessage}</div>
-      )}
-    </div>
   );
 };
 
