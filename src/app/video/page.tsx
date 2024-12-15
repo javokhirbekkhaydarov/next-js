@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import VideoCall from "../components/video/VideoCall";
 import Peer from "peerjs";
 
@@ -9,16 +9,18 @@ const VideoPage = () => {
   const [remotePeerId, setRemotePeerId] = useState("");
   const [isMeetingStarted, setIsMeetingStarted] = useState(false);
 
-  const searchParams = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
-    const queryPeerId = searchParams.get("peerId");
+    // Get the query parameter from the window's URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryPeerId = urlParams.get("peerId");
+
     if (queryPeerId) {
       setRemotePeerId(queryPeerId);
       setIsMeetingStarted(true);
     }
-  }, [searchParams]);
+  }, []);
 
   const createMeeting = () => {
     const peer = new Peer();
@@ -27,8 +29,9 @@ const VideoPage = () => {
       setPeerId(id);
       setIsMeetingStarted(true);
 
-      // Update URL without reloading the page
-      router.push(`/?peerId=${id}`);
+      // Update URL without full page reload
+      const newUrl = `/?peerId=${id}`;
+      router.push(newUrl);
     });
 
     peer.on("error", (err) => {
