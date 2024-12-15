@@ -7,6 +7,7 @@ const VideoCall = ({ peerId, remotePeerId }) => {
     const remoteVideoRef = useRef(null);
     const [isConnected, setIsConnected] = useState(false);
     const [stream, setStream] = useState(null);
+    const peerInstance = useRef(null);
 
     useEffect(() => {
         const getUserMedia = async () => {
@@ -29,35 +30,41 @@ const VideoCall = ({ peerId, remotePeerId }) => {
 
     useEffect(() => {
         if (peerId && remotePeerId && stream) {
-            const peer = new Peer(peerId);
+            // Create a peer instance only once when peerId changes
+            if (!peerInstance.current) {
+                const peer = new Peer(peerId);
 
-            peer.on("open", () => {
-                console.log("Peer connection established");
-            });
+                peerInstance.current = peer;
 
-            peer.on("call", (call) => {
-                call.answer(stream); // Answer the incoming call with the local stream
-                call.on("stream", (remoteStream) => {
-                    if (remoteVideoRef.current) {
-                        remoteVideoRef.current.srcObject = remoteStream;
-                    }
-                    setIsConnected(true);
+                peer.on("open", () => {
+                    console.log("Peer connection established");
                 });
-            });
 
-            if (remotePeerId) {
-                const call = peer.call(remotePeerId, stream); // Call the remote peer with the local stream
-                call.on("stream", (remoteStream) => {
-                    if (remoteVideoRef.current) {
-                        remoteVideoRef.current.srcObject = remoteStream;
-                    }
-                    setIsConnected(true);
+                peer.on("call", (call) => {
+                    call.answer(stream); // Answer the incoming call with the local stream
+                    call.on("stream", (remoteStream) => {
+                        if (remoteVideoRef.current) {
+                            remoteVideoRef.current.srcObject = remoteStream;
+                        }
+                        setIsConnected(true);
+                    });
                 });
+
+                // If there's a remotePeerId, initiate the call to the remote peer
+                if (remotePeerId) {
+                    const call = peer.call(remotePeerId, stream); // Call the remote peer with the local stream
+                    call.on("stream", (remoteStream) => {
+                        if (remoteVideoRef.current) {
+                            remoteVideoRef.current.srcObject = remoteStream;
+                        }
+                        setIsConnected(true);
+                    });
+                }
+
+                return () => {
+                    peerInstance.current?.destroy();
+                };
             }
-
-            return () => {
-                peer.destroy();
-            };
         }
     }, [peerId, remotePeerId, stream]);
 

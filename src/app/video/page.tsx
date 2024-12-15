@@ -21,9 +21,10 @@ const VideoPage = () => {
 
   const createMeeting = () => {
     const peer = new Peer();
+
     peer.on("open", (id) => {
-      setPeerId(id);
-      setShareableLink(`${window.location.origin}?peerId=${id}`);
+      setPeerId(id);  // Get the local peer ID
+      setShareableLink(`${window.location.origin}/video?page=meeting&peerId=${id}`);
       setIsMeetingStarted(true);
     });
 
@@ -40,38 +41,38 @@ const VideoPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center flex-col" style={{ padding: "20px", position: "absolute", top: "20px" }}>
-      <h1>Video Call</h1>
+      <div className="flex items-center justify-center flex-col" style={{ padding: "20px", position: "absolute", top: "20px" }}>
+        <h1>Video Call</h1>
 
-      {!isMeetingStarted ? (
-        <button
-          onClick={createMeeting}
-          className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100"
-        >
-          New meeting +
-        </button>
-      ) : (
-        <div>
-          {peerId && (
+        {!isMeetingStarted ? (
+            <button
+                onClick={createMeeting}
+                className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100"
+            >
+              New meeting +
+            </button>
+        ) : (
             <div>
-              <p>Share this link with others to join:</p>
-              <input
-                type="text"
-                value={linkCopied ? "Link copied!" : shareableLink}
-                readOnly
-                className="border px-2 py-1 rounded"
-              />
-              <button onClick={handleCopyLink} className="ml-2 btn">
-                {!linkCopied ? "Copy Link" : "Copied✅"}
-              </button>
+              {peerId && (
+                  <div>
+                    <p>Share this link with others to join:</p>
+                    <input
+                        type="text"
+                        value={linkCopied ? "Link copied!" : shareableLink}
+                        readOnly
+                        className="border px-2 py-1 rounded"
+                    />
+                    <button onClick={handleCopyLink} className="ml-2 btn">
+                      {!linkCopied ? "Copy Link" : "Copied✅"}
+                    </button>
+                  </div>
+              )}
+              {remotePeerId && <p>Connecting to: {remotePeerId}</p>}
             </div>
-          )}
-          {remotePeerId && <p>Connecting to: {remotePeerId}</p>}
-        </div>
-      )}
+        )}
 
-      {isMeetingStarted && <VideoCall peerId={peerId} remotePeerId={remotePeerId} />}
-    </div>
+        {isMeetingStarted && <VideoCall peerId={peerId} remotePeerId={remotePeerId} />}
+      </div>
   );
 };
 
