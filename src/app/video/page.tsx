@@ -23,8 +23,8 @@ const VideoPage = () => {
     const peer = new Peer();
 
     peer.on("open", (id) => {
-      setPeerId(id);  // Get the local peer ID
-      setShareableLink(`${window.location.origin}/video?page=meeting&peerId=${id}`);
+      setPeerId(id);
+      setShareableLink(`${window.location.origin}?peerId=${id}`);
       setIsMeetingStarted(true);
     });
 
