@@ -35,6 +35,7 @@ const VideoCall: React.FC<VideoCallProps> = ({ peerId, remotePeerId }) => {
                 });
 
                 currentPeer.on("call", (call) => {
+                    console.log("Incoming call...");
                     call.answer(stream);
                     call.on("stream", (remoteStream) => {
                         if (remoteVideoRef.current) {
@@ -44,7 +45,9 @@ const VideoCall: React.FC<VideoCallProps> = ({ peerId, remotePeerId }) => {
                     });
                 });
 
+                // If remotePeerId is provided, make the outgoing call
                 if (remotePeerId) {
+                    console.log("Making call to:", remotePeerId);
                     const call = currentPeer.call(remotePeerId, stream);
                     call.on("stream", (remoteStream) => {
                         if (remoteVideoRef.current) {
@@ -58,7 +61,7 @@ const VideoCall: React.FC<VideoCallProps> = ({ peerId, remotePeerId }) => {
             }
         };
 
-          initializePeer();
+        initializePeer();
 
         return () => {
             if (currentPeer) {
@@ -66,6 +69,7 @@ const VideoCall: React.FC<VideoCallProps> = ({ peerId, remotePeerId }) => {
             }
         };
     }, [peerId, remotePeerId]);
+
 
     return (
         <div className="mt-6">
