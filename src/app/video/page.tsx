@@ -41,10 +41,12 @@ const VideoPage = () => {
 
   return (
     <div
-      className="flex flex-col items-center justify-center"
-      style={{ padding: "20px", position: "absolute", top: "20px" }}
+      className="flex flex-col items-center gap-4 justify-center"
+      style={{ padding: "20px" }}
     >
-      <h1>Video Call</h1>
+      {!isMeetingStarted && (
+        <h1 className={"text-3xl text-uppercase"}>Video Call</h1>
+      )}
 
       {!isMeetingStarted && (
         <button
