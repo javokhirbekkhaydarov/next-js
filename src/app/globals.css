@@ -61,3 +61,37 @@ video {
 .icons .end_call {
   background: red;
 }
+.remote_video {
+  padding: 0;
+}
+@media (max-width: 900px) {
+  .remote_video {
+    width: 260px;
+  }
+}
+
+@media (max-width: 600px) {
+  .share_card {
+    padding: 2px;
+    justify-content: center;
+    text-align: center;
+  }
+  .share_card p {
+    font-size: 12px;
+  }
+  .share_card input , .share_card button{
+    padding: 4px 8px;
+    margin: 0;
+  }
+  .remote_video {
+    bottom: 100px;
+    padding: 0;
+    width: 100px;
+    height: auto;
+    object-fit: contain;
+  }
+  .icons .video svg {
+    width: 30px;
+    height: 30px;
+  }
+}

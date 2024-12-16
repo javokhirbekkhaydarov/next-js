@@ -140,7 +140,7 @@ const VideoCall = ({ peerId, remotePeerId }) => {
     window.location.href = '/'
     setTimeout(() => {
       window.location.reload()
-    } , 500)
+    } , 700)
 
   };
   if (isCallEnded) {
@@ -154,7 +154,7 @@ const VideoCall = ({ peerId, remotePeerId }) => {
 
   return (
       <div className="flex flex-col items-center justify-center">
-        <div className="absolute top-4 left-4 z-10 h-auto join-card md:top-auto md:bottom-4">
+        <div className="absolute top-4 left-4 z-10 h-auto join-card md:top-auto md:bottom-4 share_card">
           <p>Share this link with others to join:</p>
           <div className="flex flex-col items-center gap-2">
             <input
@@ -182,7 +182,7 @@ const VideoCall = ({ peerId, remotePeerId }) => {
           <video
               ref={remoteVideoRef}
               autoPlay
-              className="h-auto w-[300px] object-cover join-card object-contain fixed z-10 right-4 bottom-4 bg-slate-300 m-auto border border-gray-300 rounded"
+              className="h-auto remote_video w-[300px] object-cover join-card object-contain fixed z-10 right-4 bottom-4 bg-slate-300 m-auto border border-gray-300 rounded"
           />
         </div>
         <div className="actions fixed bottom-4 flex gap-4">
