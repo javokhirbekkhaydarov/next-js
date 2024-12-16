@@ -1,10 +1,11 @@
 "use client";
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import VideoCall from "../components/video/VideoCall";
 import Peer from "peerjs";
 
-const VideoPage: React.FC = () => {
+const VideoPageContent: React.FC = () => {
   const [peerId, setPeerId] = useState<string>("");
   const [remotePeerId, setRemotePeerId] = useState<string>("");
   const [isMeetingStarted, setIsMeetingStarted] = useState(false);
@@ -55,12 +56,17 @@ const VideoPage: React.FC = () => {
         )}
 
         {isMeetingStarted && (
-            <VideoCall
-                peerId={peerId}
-                remotePeerId={remotePeerId}
-            />
+            <VideoCall peerId={peerId} remotePeerId={remotePeerId} />
         )}
       </div>
+  );
+};
+
+const VideoPage: React.FC = () => {
+  return (
+      <Suspense fallback={<div>Loading...</div>}>
+        <VideoPageContent />
+      </Suspense>
   );
 };
 
