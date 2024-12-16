@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     "no download video call",
   ],
   openGraph: {
-    title: "Instant Video Calls Without Downloads",
+    title: "Gaplashmoq",
     description:
       "With this site, you can meet with your friends without any VPN or tools. Just share a link and start the conversation.",
     images: [
