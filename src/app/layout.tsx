@@ -13,6 +13,7 @@ const geistMono = localFont({
   weight: "100 900",
 });
 import { GoogleAnalytics } from "./components/GoogleAnalytics.jsx";
+import React from "react";
 
 export const metadata: Metadata = {
   title: "Gurungxona",
@@ -51,9 +52,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-    <head>
-
-    </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
