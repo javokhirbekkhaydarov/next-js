@@ -2,16 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*:root {*/
+/*  --background: #ffffff;*/
+/*  --foreground: #171717;*/
+/*}*/
 
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
@@ -33,7 +33,7 @@ video {
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
 }
-.icons  {
+.icons {
   display: flex;
   gap: 12px;
 }
@@ -43,9 +43,8 @@ video {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-
 }
-.icons .video  {
+.icons .video {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 50px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -72,14 +71,17 @@ video {
 
 @media (max-width: 600px) {
   .share_card {
-    padding: 2px;
+    display: flex;
+    flex-direction: column;
+    padding: 8px 4px !important;
     justify-content: center;
     text-align: center;
   }
   .share_card p {
     font-size: 12px;
   }
-  .share_card input , .share_card button{
+  .share_card input,
+  .share_card button {
     padding: 4px 8px;
     margin: 0;
   }
