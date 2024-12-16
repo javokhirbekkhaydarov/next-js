@@ -26,6 +26,9 @@ export const metadata: Metadata = {
     "peer-to-peer video",
     "no download video call",
   ],
+  verification: {
+    google: 'google-site-verification=ZEpQ6N1M4zxiE809-YBAaDmKPrPWyCov4XMCweyjsMI'
+  },
   openGraph: {
     title: "Gurungxona",
     description:
@@ -48,6 +51,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+    <head>
+
+    </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
