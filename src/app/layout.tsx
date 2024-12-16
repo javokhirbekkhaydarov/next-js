@@ -12,9 +12,10 @@ const geistMono = localFont({
   variable: "--font-geist-mono",
   weight: "100 900",
 });
+import { GoogleAnalytics } from "./components/GoogleAnalytics.jsx";
 
 export const metadata: Metadata = {
-  title: "Instant Video Calls Without Downloads",
+  title: "Gurungxona",
   description:
     "With this site, you can meet with your friends without any VPN or tools. Just share a link and start the conversation.",
   keywords: [
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
     "no download video call",
   ],
   openGraph: {
-    title: "Gaplashmoq",
+    title: "Gurungxona",
     description:
       "With this site, you can meet with your friends without any VPN or tools. Just share a link and start the conversation.",
     images: [
@@ -50,6 +51,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <GoogleAnalytics />
         {children}
       </body>
     </html>
