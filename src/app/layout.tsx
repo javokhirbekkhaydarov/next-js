@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     "no download video call",
   ],
   verification: {
-    google: 'google-site-verification=ZEpQ6N1M4zxiE809-YBAaDmKPrPWyCov4XMCweyjsMI'
+    google: 'google-site-verification=LnyxmPyGP2ZdulkxcRCsTsstgNepsGYbEDozZG2Z1Bk'
   },
   openGraph: {
     title: "Gurungxona",
