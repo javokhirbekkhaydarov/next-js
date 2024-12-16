@@ -12,7 +12,7 @@ const geistMono = localFont({
   variable: "--font-geist-mono",
   weight: "100 900",
 });
-import { GoogleAnalytics } from "./components/GoogleAnalytics.jsx";
+import { GoogleAnalytics } from "./components/GoogleAnalytics";
 import React from "react";
 
 export const metadata: Metadata = {
