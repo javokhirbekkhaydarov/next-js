@@ -13,7 +13,7 @@ const geistMono = localFont({
   weight: "100 900",
 });
 import { GoogleAnalytics } from "./components/GoogleAnalytics";
-import React from "react";
+import React, {Suspense} from "react";
 
 export const metadata: Metadata = {
   title: "Gurungxona",
@@ -46,18 +46,20 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
+                                     children,
+                                   }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+      <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+      <Suspense fallback={null}>
         <GoogleAnalytics />
-        {children}
+      </Suspense>
+      {children}
       </body>
-    </html>
+      </html>
   );
 }
