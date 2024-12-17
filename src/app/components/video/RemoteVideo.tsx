@@ -8,7 +8,10 @@ interface RemoteVideoProps {
 
 export const RemoteVideo: React.FC<RemoteVideoProps> = ({
                                                             videoRef,
-                                                            className = "h-auto remote_video w-[300px] object-cover join-card object-contain fixed z-10 right-4 bottom-4 bg-slate-300 m-auto border border-gray-300 rounded"
+
+                                                            className="object-contain fixed z-0 h-dvh top-0 left-0 right-0 bottom-0  border-gray-300 rounded m-auto"
+
+
                                                         }) => {
     return (
         <video
