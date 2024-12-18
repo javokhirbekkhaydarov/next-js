@@ -1,7 +1,3 @@
-import Image from "next/image";
-import profilePic from "./assets/men.jpg";
-import InfoCard from "@/app/components/InfoCard";
-import Link from "next/link";
 import VideoPage from "@/app/video/page";
 export default function Home() {
   return (
