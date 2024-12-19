@@ -39,7 +39,7 @@ export const metadata: Metadata = {
         url: "https://utfs.io/f/UVT8GTq2evXVZ47YKofz5Fsjvb6gkUqywaN3IQLcrThoPOVe",
         alt: "A preview of the video call platform",
         width: 1200,
-        height: 630,
+        height: 600,
       },
     ],
   },
