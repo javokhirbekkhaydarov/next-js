@@ -39,34 +39,34 @@ const VideoPageContent: React.FC = () => {
   };
 
   return (
-      <div
-          className="flex flex-col items-center gap-4 justify-center min-h-screen"
-          style={{ padding: "20px" }}
-      >
-        {!isMeetingStarted && (
-            <>
-              <h1 className="text-3xl text-uppercase font-bold">Video Call</h1>
-              <button
-                  onClick={createMeeting}
-                  className="py-2.5 px-5 mb-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100"
-              >
-                New Meeting +
-              </button>
-            </>
-        )}
+    <div
+      className="flex flex-col items-center gap-4 justify-center min-h-screen"
+      style={{ padding: "20px" }}
+    >
+      {!isMeetingStarted && (
+        <>
+          <h1 className="text-3xl text-uppercase font-bold">Video Call</h1>
+          <button
+            onClick={createMeeting}
+            className="py-2.5 px-5 mb-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            New Meeting +
+          </button>
+        </>
+      )}
 
-        {isMeetingStarted && (
-            <VideoCall peerId={peerId} remotePeerId={remotePeerId} />
-        )}
-      </div>
+      {isMeetingStarted && (
+        <VideoCall peerId={peerId} remotePeerId={remotePeerId} />
+      )}
+    </div>
   );
 };
 
 const VideoPage: React.FC = () => {
   return (
-      <Suspense fallback={<div>Loading...</div>}>
-        <VideoPageContent />
-      </Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
+      <VideoPageContent />
+    </Suspense>
   );
 };
 
